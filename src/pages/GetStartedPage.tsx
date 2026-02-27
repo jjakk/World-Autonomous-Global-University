@@ -7,8 +7,12 @@ import { useState } from 'react';
 import ChatAgent from '../classes/ChatAgent';
 import majors from "../majors.json";
 import AppStorage from '../classes/AppStorage';
+import { useNavigate } from 'react-router-dom';
+import type { User } from '../classes/User';
 
 function GetStartedPage() {
+  const navigate = useNavigate();
+
   const modelOptions = [
     { name: "Gemini", value: "gemini" },
   ];
@@ -35,7 +39,6 @@ function GetStartedPage() {
     });
     const isValid = await ChatAgent.testKey(apiKey);
     if (isValid) {
-      alert("API Key is valid! Model setup complete.");
       setCheckList({
         ...checkList,
         modelSetup: { loading: false, done: true },
@@ -64,10 +67,17 @@ function GetStartedPage() {
   };
 
   const getStarted = () => {
-    // Save API key, model, and major to localStorage
-    AppStorage.saveApiKey(apiKey);
-    AppStorage.saveModel(model);
-    AppStorage.saveMajor(major);
+    // Save the contstructed user object to local storage
+    const user: User = {
+      apiKey,
+      major,
+      model,
+      hitRateLimit: false,
+    }
+    AppStorage.saveUser(user);
+    
+    // Redirect to home page
+    navigate("/home");
   };
   
   return (
