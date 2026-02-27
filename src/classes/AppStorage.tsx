@@ -11,4 +11,20 @@ export default class AppStorage {
         const user = localStorage.getItem("wagu_user");
         return user ? JSON.parse(user) : null;
     }
+
+    static updateUserApiKey(apiKey: string) {
+        const user = this.getUser();
+        if (user) {
+            user.apiKey = apiKey;
+            this.saveUser(user);
+        }
+    }
+
+    static markRateLimitHit() {
+        const user = this.getUser();
+        if (user) {
+            user.hitRateLimit = true;
+            this.saveUser(user);
+        }
+    }
 }

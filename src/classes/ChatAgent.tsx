@@ -32,15 +32,29 @@ export default class ChatAgent {
     static ai = AppAuth.isAuthenticated() ? new GoogleGenAI({
         apiKey: AppStorage.getUser()?.apiKey || "",
     }) : null;
+
+    private static onFailedRequest(error: any) {
+        if(error?.status === 429) {
+            console.log("Rate limit hit. Marking in storage.");
+            AppStorage.markRateLimitHit();
+        }
+    }
+
     static async ask(prompt: string){
         if(!this.ai) {
             throw new Error("AI not initialized. Please ensure you are authenticated and have a valid API key.");
         }
-        const response = await this.ai.models.generateContent({
-            model: this.model,
-            contents: prompt,
-        })
-        return response.text;
+        try {
+            const response = await this.ai.models.generateContent({
+                model: this.model,
+                contents: prompt,
+            })
+            return response.text;
+        }
+        catch (error) {
+            this.onFailedRequest(error);
+            throw error;
+        }
     }
     static async testKey(key: string): Promise<boolean> {
         try {
@@ -49,10 +63,10 @@ export default class ChatAgent {
                 model: this.model,
                 contents: "Test",
             });
-            console.log("API Key test response:", response);
             return !!response.text;
-        } catch (error) {
-            console.error("API Key validation failed:", error);
+        }
+        catch (error) {
+            this.onFailedRequest(error);
             return false;
         }
     }
