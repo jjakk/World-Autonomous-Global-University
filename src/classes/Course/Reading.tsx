@@ -1,6 +1,6 @@
 export interface Reading {
     title: string;
     description: string;
-    unlocked: boolean;
+    read?: boolean;
     content?: string[];
 };

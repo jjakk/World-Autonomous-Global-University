@@ -65,4 +65,14 @@ export default class AppStorage {
             this.saveCourses(courses || []);
         }
     }
+    static markReadingAsRead(courseIndex: number, unitIndex: number, readingIndex: number) {
+        const courses = this.getCourses();
+        const course = courses ? courses[courseIndex] : null;
+        const unit = course?.units ? course.units[unitIndex] : null;
+        const reading = unit?.readings ? unit.readings[readingIndex] : null;
+        if (reading) {
+            reading.read = true;
+            this.saveCourses(courses || []);
+        }
+    }
 };

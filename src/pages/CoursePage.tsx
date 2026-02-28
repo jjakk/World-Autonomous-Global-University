@@ -35,7 +35,7 @@ function CoursePage() {
             const courses: Course[] | null = AppStorage.getCourses();
             if(!courseIndex || !courses) {
                 alert(`Error: Could not find this course`);
-                navigate("/home");
+                navigate("/");
             }
             else {
                 const index = parseInt(courseIndex);
@@ -61,9 +61,13 @@ function CoursePage() {
     
     return (
         <div>
+            <Button label="Back to Plan of Study" onClick={() => navigate("/plan-of-study")} />
             <h1>Course {calculateCourseCode(parseInt(courseIndex || "0"))}: {course?.name}</h1>
             <h2>{course?.description}</h2>
-            <ProgressBar value={(course?.progress || 0)*100}></ProgressBar>
+            <ProgressBar
+                // value={(course?.progress || 0)*100}
+                value={0}
+            ></ProgressBar>
             <h2>Curriculum</h2>
             {loadingContent ? (
                 <div className="loading-content">
@@ -72,17 +76,22 @@ function CoursePage() {
             ) : (
                 <Accordion>
                     {units.map((unit, index) => (
-                        <AccordionTab key={index} header={unit.name} disabled={!unit.unlocked}>
+                        <AccordionTab
+                            key={index}
+                            header={unit.name}
+                            // disabled={!unit.unlocked}
+                        >
                             <h3>{unit.name}</h3>
-                            {unit.readings.map((reading, rIndex) => (
+                            {unit.readings.map((reading, rIndex, array) => (
                                 <div key={rIndex}>
                                     <h4>Reading {rIndex + 1} - {reading.title}</h4>
                                     <h5>{reading.description}</h5>
                                     <Button
-                                        label={"View Reading" + (reading.unlocked ? "" : " (Locked)")}
-                                        disabled={!reading.unlocked}
+                                        label={"View Reading " + (reading.read ? "(Complete)" : "(Incomplete)")}
                                         onClick={() => navigate(`/course/${courseIndex}/unit/${index}/reading/${rIndex}`)}
-                                        outlined
+                                        severity="success"
+                                        outlined={!reading.read}
+                                        disabled={rIndex > 0 && array[rIndex - 1].read === false}
                                     />
                                 </div>
                             ))}

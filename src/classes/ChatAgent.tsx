@@ -53,8 +53,8 @@ export default class ChatAgent {
                 throw new Error("No response from AI");
             }
             const courses: Course[] = coursesSchema.parse(JSON.parse(response.text))
-                .map((c: Course, i: number) =>
-                    ({ ...c, unlocked: i === 0, progress: 0, units: [] })
+                .map((c: Course) =>
+                    ({ ...c, units: [] })
             );
             return courses;
         }
@@ -78,11 +78,7 @@ export default class ChatAgent {
             if(!response.text) {
                 throw new Error("No response from AI");
             }
-            const units: Unit[] = unitsSchema.parse(JSON.parse(response.text))
-                .map((u: Unit, i: number) => {
-                    u.readings = u.readings.map((r, j) => ({ ...r, unlocked: j === 0 }));
-                    return { ...u, unlocked: i === 0 };
-                });
+            const units: Unit[] = unitsSchema.parse(JSON.parse(response.text));
             return units;
         }
         catch (error) {

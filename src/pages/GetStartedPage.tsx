@@ -93,7 +93,7 @@ function GetStartedPage() {
     });
     
     // Redirect to home page
-    navigate("/home");
+    navigate("/");
   };
   
   return (

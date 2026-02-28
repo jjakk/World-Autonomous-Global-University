@@ -21,6 +21,18 @@ function ReadingPage() {
         return updatedReading;
     };
 
+    const markAsRead = () => {
+        if(reading) {
+            const updatedReading = { ...reading, read: true };
+            setReading(updatedReading);
+            AppStorage.markReadingAsRead(
+                parseInt(courseIndex || "-1"),
+                parseInt(unitIndex || "-1"),
+                parseInt(readingIndex || "-1")
+            );
+        }
+    };
+
     useEffect(() => {
         const units: Unit[] | null = AppStorage.getCourseUnits(parseInt(courseIndex || "-1"));
         if(units) {
@@ -55,8 +67,6 @@ function ReadingPage() {
         })();
     }, [reading]);
 
-    console.log(reading?.content);
-
     return (
         <div className="reading-page">
             <h1>{reading?.title}</h1>
@@ -73,9 +83,23 @@ function ReadingPage() {
                         ))}
                     </div>
                     <div className="end-of-reading-actions">
-                        <Button label="Back to Course" severity="secondary" onClick={() => navigate(`/course/${courseIndex}`)} />
-                        <Button label="Mark as Read" severity="success" outlined />
-                        <Button label="Next Reading" severity="secondary" disabled={true} />
+                        <Button
+                            label="Back to Course"
+                            severity="secondary"
+                            onClick={() => navigate(`/course/${courseIndex}`)}
+                        />
+                        <Button
+                            label="Mark as Read"
+                            severity="success"
+                            disabled={reading?.read}
+                            outlined={!reading?.read}
+                            onClick={markAsRead}
+                        />
+                        <Button
+                            label="Next Reading"
+                            severity="secondary"
+                            disabled={true}
+                        />
                     </div>
                 </>
             )}

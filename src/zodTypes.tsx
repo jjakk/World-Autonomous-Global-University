@@ -6,8 +6,8 @@ import type { Reading } from "./classes/Course/Reading";
 export const readingSchema: z.ZodType<Reading> = z.object({
     title: z.string(),
     description: z.string(),
-    unlocked: z.boolean().default(false),
     content: z.array(z.string()).optional(),
+    read: z.boolean().optional()
 });
 
 export const readingSchema_JSON = {
@@ -23,7 +23,6 @@ export const readingSchema_JSON = {
 export const unitsSchema: z.ZodType<Unit[]> = z.array(z.object({
     name: z.string(),
     readings: readingSchema.array(),
-    unlocked: z.boolean().default(false)
 }));
 
 export const unitsSchema_JSON = {
@@ -53,7 +52,6 @@ export const coursesSchema: z.ZodType<Course[]> = z.array(z.object({
     description: z.string(),
     type: z.enum(["core", "elective"]),
     progress: z.number().default(0),
-    unlocked: z.boolean().default(false),
 }));
 
 export const coursesSchema_JSON = {

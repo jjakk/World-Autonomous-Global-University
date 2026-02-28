@@ -5,7 +5,5 @@ export default interface Course {
     name: string;
     description: string;
     type: "core" | "elective";
-    progress: number;
-    unlocked: boolean;
     units?: Unit[];
 };

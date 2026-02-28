@@ -8,7 +8,7 @@ import { PrimeReactProvider } from 'primereact/api';
 import 'primeicons/primeicons.css';
 import GetStartedPage from './pages/GetStartedPage.tsx';
 import AppAuth from './classes/AppAuth.tsx';
-import HomePage from './pages/HomePage.tsx';
+import PlanOfStudyPage from './pages/PlanOfStudyPage.tsx';
 import AppStorage from './classes/AppStorage.tsx';
 import type { User } from './classes/User.tsx';
 import HitRateLimitPage from './pages/HitRateLimitPage.tsx';
@@ -17,7 +17,7 @@ import ReadingPage from './pages/ReadingPage.tsx';
 
 function RootScreen() {
   const authenticated = AppAuth.isAuthenticated();
-  return authenticated ? <Navigate to="/home" /> : <Navigate to="/get-started" />;
+  return authenticated ? <Navigate to="/plan-of-study" /> : <Navigate to="/get-started" />;
 }
 
 function AuthenticatedOnlyRoutes () {
@@ -32,7 +32,7 @@ function AuthenticatedOnlyRoutes () {
 
 function UnauthenticatedOnlyRoutes () {
   const authenticated = AppAuth.isAuthenticated();
-  return !authenticated ? <Outlet /> : <Navigate to="/home" />;
+  return !authenticated ? <Outlet /> : <Navigate to="/plan-of-study" />;
 }
 
 let router = createBrowserRouter([
@@ -56,8 +56,8 @@ let router = createBrowserRouter([
         element: <AuthenticatedOnlyRoutes />,
         children: [
           {
-            path: "/home",
-            element: <HomePage />,
+            path: "/plan-of-study",
+            element: <PlanOfStudyPage />,
           },
           {
             path: "/hit-rate-limit",

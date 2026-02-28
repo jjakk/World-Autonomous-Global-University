@@ -1,5 +1,5 @@
+import "./PlanOfStudyPage.scss"
 import { useEffect, useState } from "react";
-import "./HomePage.scss"
 import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { calculateCourseCode } from "../utils";
 import { useNavigate } from "react-router-dom";
 
-function HomePage() {
+function PlanOfStudyPage() {
     const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
     
@@ -32,7 +32,6 @@ function HomePage() {
                 courses.map((course, index) => (
                     <AccordionTab
                         key={index}
-                        disabled={!course.unlocked}
                         header={
                             <div className="course-header">
                                 <span className="course-header-text">
@@ -41,7 +40,10 @@ function HomePage() {
                                     {course.name}
                                 </span>
                                 <div className="course-header-progress">
-                                    <ProgressBar value={course.progress*100}></ProgressBar>
+                                    <ProgressBar
+                                        // value={course.progress*100}
+                                        value={0}
+                                    ></ProgressBar>
                                 </div>
                             </div>
                         }
@@ -63,4 +65,4 @@ function HomePage() {
     );
 };
 
-export default HomePage;
+export default PlanOfStudyPage;
