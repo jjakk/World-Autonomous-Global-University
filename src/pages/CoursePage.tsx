@@ -3,7 +3,7 @@ import "./CoursePage.scss"
 import { useEffect, useState } from "react";
 import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
-import { calculateCourseCode } from "../utils";
+import { calculateCourseCode, evalCourseProgress, evalUnitProgress } from "../utils";
 import { ProgressBar } from "primereact/progressbar";
 import ChatAgent from "../classes/ChatAgent";
 import type { Unit } from "../classes/Course/Unit";
@@ -65,8 +65,7 @@ function CoursePage() {
             <h1>Course {calculateCourseCode(parseInt(courseIndex || "0"))}: {course?.name}</h1>
             <h2>{course?.description}</h2>
             <ProgressBar
-                // value={(course?.progress || 0)*100}
-                value={0}
+                value={evalCourseProgress(course)}
             ></ProgressBar>
             <h2>Curriculum</h2>
             {loadingContent ? (
@@ -78,7 +77,21 @@ function CoursePage() {
                     {units.map((unit, index) => (
                         <AccordionTab
                             key={index}
-                            header={unit.name}
+                            header={
+                                <div className="unit-header">
+                                    <span className="unit-header-text">
+                                        {unit.name}
+                                    </span>
+                                    <div className="unit-header-progress">
+                                        <div className="unit-header-progress-bar">
+                                            <ProgressBar
+                                                value={evalUnitProgress(unit)}
+                                            ></ProgressBar>
+                                        </div>
+                                        <span className="unit-header-progress-text">Complete</span>
+                                    </div>
+                                </div>
+                            }
                             // disabled={!unit.unlocked}
                         >
                             <h3>{unit.name}</h3>

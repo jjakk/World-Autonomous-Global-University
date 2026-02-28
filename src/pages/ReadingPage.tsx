@@ -95,11 +95,6 @@ function ReadingPage() {
                             outlined={!reading?.read}
                             onClick={markAsRead}
                         />
-                        <Button
-                            label="Next Reading"
-                            severity="secondary"
-                            disabled={true}
-                        />
                     </div>
                 </>
             )}

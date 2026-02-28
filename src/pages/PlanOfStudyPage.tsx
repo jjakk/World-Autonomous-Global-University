@@ -5,7 +5,7 @@ import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
-import { calculateCourseCode } from "../utils";
+import { calculateCourseCode, evalCourseProgress, evalPlanOfStudyProgress } from "../utils";
 import { useNavigate } from "react-router-dom";
 
 function PlanOfStudyPage() {
@@ -24,6 +24,9 @@ function PlanOfStudyPage() {
     return (
         <div className="home-page">
             <h1>Welcome to World Autonomous Global University!</h1>
+            <ProgressBar
+                value={evalPlanOfStudyProgress(courses)}
+            ></ProgressBar>
             <h2>Plan of Study:</h2>
             <Accordion>
             {
@@ -40,10 +43,12 @@ function PlanOfStudyPage() {
                                     {course.name}
                                 </span>
                                 <div className="course-header-progress">
-                                    <ProgressBar
-                                        // value={course.progress*100}
-                                        value={0}
-                                    ></ProgressBar>
+                                    <div className="course-header-progress-bar">
+                                        <ProgressBar
+                                            value={evalCourseProgress(course)}
+                                        ></ProgressBar>
+                                    </div>
+                                    <span className="course-header-progress-text">Complete</span>
                                 </div>
                             </div>
                         }

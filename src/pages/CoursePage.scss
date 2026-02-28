@@ -4,3 +4,27 @@
     align-items: center;
     height: 200px;
 }
+.unit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    .unit-header-text {
+        font-size: 1.25rem;
+        font-weight: bold;
+        flex: 3;
+    }
+    .unit-header-progress {
+        flex: 1;
+        text-align: right;
+
+        .unit-header-progress-bar {
+            margin-bottom: 0.5rem;
+        }
+        .unit-header-progress-text {
+            font-size: 0.875rem;
+            color: #555;
+        }
+    }
+}
