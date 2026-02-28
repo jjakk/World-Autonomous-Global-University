@@ -1,8 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
 import AppStorage from "./AppStorage";
-import { coursesSchema, coursesSchema_JSON, unitsSchema, unitsSchema_JSON } from "../zodTypes";
+import { coursesSchema, coursesSchema_JSON, readingSchema, readingSchema_JSON, unitsSchema, unitsSchema_JSON } from "../zodTypes";
 import type Course from "./Course/Course";
 import type { Unit } from "./Course/Unit";
+import type { Reading } from "./Course/Reading";
 
 export default class ChatAgent {
     private static model = "gemini-2.5-flash";
@@ -37,42 +38,79 @@ export default class ChatAgent {
         }
     }
     async createCourses(major: string): Promise<Course[]> {
-        const prompt = `Create a 4 year curriculum for a university student majoring in ${major}. Include core courses, electives, and a brief description of each course.`;
-        const response = await this.ai.models.generateContent({
-            model: ChatAgent.model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseJsonSchema: coursesSchema_JSON,
+        try {
+            const prompt = `Create a 4 year curriculum for a university student majoring in ${major}. Include core courses, electives, and a brief description of each course.`;
+            const response = await this.ai.models.generateContent({
+                model: ChatAgent.model,
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseJsonSchema: coursesSchema_JSON,
+                }
+            });
+    
+            if(!response.text) {
+                throw new Error("No response from AI");
             }
-        });
-
-        if(!response.text) {
-            throw new Error("No response from AI");
+            const courses: Course[] = coursesSchema.parse(JSON.parse(response.text))
+                .map((c: Course, i: number) =>
+                    ({ ...c, unlocked: i === 0, progress: 0, units: [] })
+            );
+            return courses;
         }
-        const courses: Course[] = coursesSchema.parse(JSON.parse(response.text))
-            .map((c: Course, i: number) =>
-                ({ ...c, unlocked: i === 0, progress: 0, units: [] })
-        );
-        return courses;
+        catch (error) {
+            ChatAgent.onFailedRequest(error);
+            throw new Error("Failed to create courses. See console for details.");
+        }
     }
     async createUnits(course: Course): Promise<Unit[]> {
-        const prompt = `Create 15 weekly units (each with a few readings) for the following course: "${course.name}", with the following description: "${course.description}`;
-        const response = await this.ai.models.generateContent({
-            model: ChatAgent.model,
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseJsonSchema: unitsSchema_JSON,
+        try {
+            const prompt = `Create 15 weekly units (each with a few readings) for the following course: "${course.name}", with the following description: "${course.description}`;
+            const response = await this.ai.models.generateContent({
+                model: ChatAgent.model,
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseJsonSchema: unitsSchema_JSON,
+                }
+            });
+    
+            if(!response.text) {
+                throw new Error("No response from AI");
             }
-        });
-
-        if(!response.text) {
-            throw new Error("No response from AI");
+            const units: Unit[] = unitsSchema.parse(JSON.parse(response.text))
+                .map((u: Unit, i: number) => {
+                    u.readings = u.readings.map((r, j) => ({ ...r, unlocked: j === 0 }));
+                    return { ...u, unlocked: i === 0 };
+                });
+            return units;
         }
-        const units: Unit[] = unitsSchema.parse(JSON.parse(response.text))
-            .map((u: Unit, i: number) =>
-                ({ ...u, unlocked: i === 0 }));
-        return units;
+        catch (error) {
+            ChatAgent.onFailedRequest(error);
+            throw new Error("Failed to create courses. See console for details.");
+        }
+    }
+    async createReadingContent(reading: Reading): Promise<Reading> {
+        try {
+            const prompt = `Create me a reading for the following reading: "${reading.title}", with the following description: "${reading.description}". It should be about a 30 minute read and formatted as paragraphs of text.`;
+            const response = await this.ai.models.generateContent({
+                model: ChatAgent.model,
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseJsonSchema: readingSchema_JSON,
+                }
+            });
+    
+            if(!response.text) {
+                throw new Error("No response from AI");
+            }
+            const updatedReading: Reading = readingSchema.parse(JSON.parse(response.text));
+            return updatedReading;
+        }
+        catch (error) {
+            ChatAgent.onFailedRequest(error);
+            throw new Error("Failed to create courses. See console for details.");
+        }
     }
 };

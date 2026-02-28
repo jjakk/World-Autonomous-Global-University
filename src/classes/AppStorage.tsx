@@ -45,4 +45,24 @@ export default class AppStorage {
             }
         }
     }
+    // UNITS
+    static getCourseUnits(courseIndex: number): Unit[] | null {
+        const courses = this.getCourses();
+        if (courses) {
+            const foundCourse = courses[courseIndex];
+            return foundCourse?.units || null;
+        }
+        return null;
+    }
+    // READINGS
+    static addReadingContent(courseIndex: number, unitIndex: number, readingIndex: number, content: string[]) {
+        const courses = this.getCourses();
+        const course = courses ? courses[courseIndex] : null;
+        const unit = course?.units ? course.units[unitIndex] : null;
+        const reading = unit?.readings ? unit.readings[readingIndex] : null;
+        if (reading) {
+            reading.content = content;
+            this.saveCourses(courses || []);
+        }
+    }
 };

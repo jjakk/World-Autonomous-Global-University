@@ -6,7 +6,8 @@ import type { Reading } from "./classes/Course/Reading";
 export const readingSchema: z.ZodType<Reading> = z.object({
     title: z.string(),
     description: z.string(),
-    content: z.string().optional(),
+    unlocked: z.boolean().default(false),
+    content: z.array(z.string()).optional(),
 });
 
 export const readingSchema_JSON = {
@@ -14,18 +15,14 @@ export const readingSchema_JSON = {
     properties: {
         title: { type: "string" },
         description: { type: "string" },
-        content: { type: "string" }
+        content: { type: "array", items: { type: "string" } }
     },
     required: ["title", "description"]
 };
 
 export const unitsSchema: z.ZodType<Unit[]> = z.array(z.object({
     name: z.string(),
-    reading: z.array(z.object({
-        title: z.string(),
-        description: z.string(),
-        content: z.string().optional(),
-    })),
+    readings: readingSchema.array(),
     unlocked: z.boolean().default(false)
 }));
 
@@ -35,7 +32,7 @@ export const unitsSchema_JSON = {
         type: "object",
         properties: {
             name: { type: "string" },
-            reading: {
+            readings: {
                 type: "array",
                 items: {
                     type: "object",
@@ -47,7 +44,7 @@ export const unitsSchema_JSON = {
                 }
             }
         },
-        required: ["name", "reading"]
+        required: ["name", "readings"]
     }
 };
 

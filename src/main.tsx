@@ -13,6 +13,7 @@ import AppStorage from './classes/AppStorage.tsx';
 import type { User } from './classes/User.tsx';
 import HitRateLimitPage from './pages/HitRateLimitPage.tsx';
 import CoursePage from './pages/CoursePage.tsx';
+import ReadingPage from './pages/ReadingPage.tsx';
 
 function RootScreen() {
   const authenticated = AppAuth.isAuthenticated();
@@ -21,10 +22,12 @@ function RootScreen() {
 
 function AuthenticatedOnlyRoutes () {
   const authenticated = AppAuth.isAuthenticated();
-  const user: User | null = AppStorage.getUser();
-  return authenticated
-    ? (user?.hitRateLimit ? <Navigate to="/hit-rate-limit" /> : <Outlet />)
-    : <Navigate to="/get-started" />;
+  if(!authenticated) {
+    return <Navigate to="/get-started" />;
+  }
+  else {
+    return <Outlet />;
+  }
 }
 
 function UnauthenticatedOnlyRoutes () {
@@ -57,12 +60,16 @@ let router = createBrowserRouter([
             element: <HomePage />,
           },
           {
+            path: "/hit-rate-limit",
+            element: <HitRateLimitPage />,
+          },
+          {
             path: "/course/:courseIndex",
             element: <CoursePage />
           },
           {
-            path: "/hit-rate-limit",
-            element: <HitRateLimitPage />,
+            path: "/course/:courseIndex/unit/:unitIndex/reading/:readingIndex",
+            element: <ReadingPage />
           },
         ]
       }

@@ -5,10 +5,11 @@ import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
-import { NavLink } from "react-router-dom";
 import { calculateCourseCode } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+    const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
     
     useEffect(() => {
@@ -35,7 +36,7 @@ function HomePage() {
                         header={
                             <div className="course-header">
                                 <span className="course-header-text">
-                                    Course {calculateCourseCode(index)}: : 
+                                    Course {calculateCourseCode(index)}:
                                     <br />
                                     {course.name}
                                 </span>
@@ -48,9 +49,10 @@ function HomePage() {
                         <div className="course-content">
                             <h2>{course.name}</h2>
                             <p>{course.description}</p>
-                            <NavLink to={`/course/${index}`}>
-                                <Button label="View Course Page" />
-                            </NavLink>
+                            <Button
+                                label="View Course Page"
+                                onClick={() => navigate(`/course/${index}`)}
+                            />
                         </div>
                     </AccordionTab>
                 ))

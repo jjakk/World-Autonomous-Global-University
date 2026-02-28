@@ -1,3 +1,4 @@
+import "./HitRateLimitPage.scss";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ function HitRateLimitPage() {
         
         // Validate the new API key before saving
         const isValid = await ChatAgent.testKey(newKey);
+        console.log("API key validation result:", isValid);
         if (isValid) {
             AppStorage.updateUserApiKey(newKey);
             navigate("/"); // Redirect to home or previous page
@@ -37,7 +39,7 @@ function HitRateLimitPage() {
             <h1>Hit Rate Limit</h1>
             <h2>Set New API Key</h2>
             <p>You have hit the rate limit for API requests. Please wait a moment and try again or update your API key.</p>
-            <form onSubmit={updateApiKey}>
+            <form className="update-key" onSubmit={updateApiKey}>
                 <InputText placeholder="New API Key" />
                 <Button label="Update" />
             </form>

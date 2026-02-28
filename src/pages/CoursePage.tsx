@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import "./CoursePage.scss"
 import { useEffect, useState } from "react";
 import type Course from "../classes/Course/Course";
@@ -9,7 +9,7 @@ import ChatAgent from "../classes/ChatAgent";
 import type { Unit } from "../classes/Course/Unit";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Accordion, AccordionTab } from "primereact/accordion";
-import UnitRender from "../components/UnitRender";
+import { Button } from "primereact/button";
 
 function CoursePage() {
     let { courseIndex } = useParams();
@@ -62,11 +62,8 @@ function CoursePage() {
     return (
         <div>
             <h1>Course {calculateCourseCode(parseInt(courseIndex || "0"))}: {course?.name}</h1>
-            <h3>{course?.description}</h3>
-            <div>
-
-            <ProgressBar value={(course?.progress || 0) * 100}></ProgressBar>
-            </div>
+            <h2>{course?.description}</h2>
+            <ProgressBar value={(course?.progress || 0)*100}></ProgressBar>
             <h2>Curriculum</h2>
             {loadingContent ? (
                 <div className="loading-content">
@@ -75,8 +72,20 @@ function CoursePage() {
             ) : (
                 <Accordion>
                     {units.map((unit, index) => (
-                        <AccordionTab key={index} header={unit.name} disabled={!unit.unlocked} >
-                            <UnitRender key={index} unit={unit} />
+                        <AccordionTab key={index} header={unit.name} disabled={!unit.unlocked}>
+                            <h3>{unit.name}</h3>
+                            {unit.readings.map((reading, rIndex) => (
+                                <div key={rIndex}>
+                                    <h4>Reading {rIndex + 1} - {reading.title}</h4>
+                                    <h5>{reading.description}</h5>
+                                    <Button
+                                        label={"View Reading" + (reading.unlocked ? "" : " (Locked)")}
+                                        disabled={!reading.unlocked}
+                                        onClick={() => navigate(`/course/${courseIndex}/unit/${index}/reading/${rIndex}`)}
+                                        outlined
+                                    />
+                                </div>
+                            ))}
                         </AccordionTab>
                     ))}
                 </Accordion>

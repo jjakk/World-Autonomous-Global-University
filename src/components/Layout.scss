@@ -7,23 +7,37 @@
     padding-top: 15px;
     padding-bottom: 15px;
     background-color: var(--primary-700);
-
-    .nav-header-text {
+    
+    .nav-header-left {
         display: flex;
-        flex-direction: column;
-        color: white;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
 
-        h1, h3 {
-            margin: 0;
+        .nav-header-logo {
+            height: 125px;
+            width: 125px;
+            border-radius: 50%;
         }
-        h1 {
-            font-weight: 600;
-        }
-        h3 {
-            font-weight: 400;
-            letter-spacing: 0.1em;
+    
+        .nav-header-text {
+            display: flex;
+            flex-direction: column;
+            color: white;
+    
+            h1, h3 {
+                margin: 0;
+            }
+            h1 {
+                font-weight: 600;
+            }
+            h3 {
+                font-weight: 400;
+                letter-spacing: 0.1em;
+            }
         }
     }
+
 
     .nav-header-links {
         display: flex;
@@ -51,6 +65,9 @@
 .outlet-container {
     padding-left: 25px;
     padding-right: 25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    min-height: calc(100vh - 170px); // At least fills the page
 }
 
 .app-footer {
@@ -61,13 +78,4 @@
     padding: 20px;
     background-color: var(--primary-700);
     color: white;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-
-// Give the body enough padding so that items don't get covered by the footer
-body {
-    padding-bottom: 160px;
 }
