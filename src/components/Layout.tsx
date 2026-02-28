@@ -1,4 +1,3 @@
-import { Accordion, AccordionTab } from "primereact/accordion";
 import "./Layout.scss";
 import { NavLink, Outlet } from "react-router-dom";
 
@@ -18,6 +17,7 @@ function AppHeader() {
                 </div>
             </div>
             <div className="nav-header-links">
+                {/* <SplitButton icon="pi pi-cog"rounded /> */}
             </div>
         </header>
     );

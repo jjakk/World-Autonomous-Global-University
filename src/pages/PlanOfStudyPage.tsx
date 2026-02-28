@@ -8,6 +8,48 @@ import { Button } from "primereact/button";
 import { calculateCourseCode, evalCourseProgress, evalPlanOfStudyProgress } from "../utils";
 import { useNavigate } from "react-router-dom";
 
+function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], startIndex: number, endIndex: number }) {
+    const navigate = useNavigate();
+
+    return (
+        <Accordion>
+        {
+            courses.map((course, index) => (index >= startIndex && index < endIndex) ? (
+                <AccordionTab
+                    key={index}
+                    header={
+                        <div className="course-header">
+                            <span className="course-header-text">
+                                Course {calculateCourseCode(index)}:
+                                <br />
+                                {course.name}
+                            </span>
+                            <div className="course-header-progress">
+                                <div className="course-header-progress-bar">
+                                    <ProgressBar
+                                        value={evalCourseProgress(course)}
+                                    ></ProgressBar>
+                                </div>
+                                <span className="course-header-progress-text">Complete</span>
+                            </div>
+                        </div>
+                    }
+                >
+                    <div className="course-content">
+                        <h2>{course.name}</h2>
+                        <p>{course.description}</p>
+                        <Button
+                            label="View Course Page"
+                            onClick={() => navigate(`/course/${index}`)}
+                        />
+                    </div>
+                </AccordionTab>
+            ) : null)
+        }
+        </Accordion>
+    );
+}
+
 function PlanOfStudyPage() {
     const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
@@ -24,48 +66,18 @@ function PlanOfStudyPage() {
     return (
         <div className="home-page">
             <h1>Welcome to World Autonomous Global University!</h1>
-            <ProgressBar
+            {/* <ProgressBar
                 value={evalPlanOfStudyProgress(courses)}
-            ></ProgressBar>
-            <h2>Plan of Study:</h2>
-            <Accordion>
-            {
-                courses
-                ?
-                courses.map((course, index) => (
-                    <AccordionTab
-                        key={index}
-                        header={
-                            <div className="course-header">
-                                <span className="course-header-text">
-                                    Course {calculateCourseCode(index)}:
-                                    <br />
-                                    {course.name}
-                                </span>
-                                <div className="course-header-progress">
-                                    <div className="course-header-progress-bar">
-                                        <ProgressBar
-                                            value={evalCourseProgress(course)}
-                                        ></ProgressBar>
-                                    </div>
-                                    <span className="course-header-progress-text">Complete</span>
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className="course-content">
-                            <h2>{course.name}</h2>
-                            <p>{course.description}</p>
-                            <Button
-                                label="View Course Page"
-                                onClick={() => navigate(`/course/${index}`)}
-                            />
-                        </div>
-                    </AccordionTab>
-                ))
-                : (<p>"Loading courses..."</p>)
-            }
-            </Accordion>
+            ></ProgressBar> */}
+            <h2>Your Plan of Study:</h2>
+            <h3>Freshman Year</h3>
+            <CoursesRender courses={courses} startIndex={0} endIndex={courses.length / 4} />
+            <h3>Sophomore Year</h3>
+            <CoursesRender courses={courses} startIndex={courses.length / 4} endIndex={courses.length / 2} />
+            <h3>Junior Year</h3>
+            <CoursesRender courses={courses} startIndex={courses.length / 2} endIndex={(3 * courses.length) / 4} />
+            <h3>Senior Year</h3>
+            <CoursesRender courses={courses} startIndex={(3 * courses.length) / 4} endIndex={courses.length} />
         </div>
     );
 };
