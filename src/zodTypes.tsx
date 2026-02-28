@@ -3,11 +3,34 @@ import type Course from "./classes/Course/Course";
 import type { Unit } from "./classes/Course/Unit";
 
 export const unitsSchema: z.ZodType<Unit[]> = z.array(z.object({
+    name: z.string(),
     reading: z.array(z.object({
         title: z.string(),
         content: z.string(),
     }))
 }));
+
+export const unitsSchema_JSON = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": { "type": "string" },
+            "reading": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "title": { "type": "string" },
+                        "content": { "type": "string" }
+                    },
+                    "required": ["title", "content"]
+                }
+            }
+        },
+        "required": ["reading"]
+    }
+};
 
 export const coursesSchema: z.ZodType<Course[]> = z.array(z.object({
     name: z.string(),

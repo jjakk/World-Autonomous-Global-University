@@ -1,6 +1,7 @@
 // This class handles the storage and retrieval of user preferences and settings for the WAGU application. It uses the browser's localStorage API to persist data across sessions.
 
 import type Course from "./Course/Course";
+import type { Unit } from "./Course/Unit";
 import type { User } from "./User";
 
 export default class AppStorage {
@@ -33,5 +34,15 @@ export default class AppStorage {
     static getCourses(): Course[] | null {
         const courses: Course[] | null = JSON.parse(localStorage.getItem("wagu_courses") || "null");
         return courses ? courses : null;
+    }
+    static addCourseUnits(course: Course, units: Unit[]) {
+        const courses = this.getCourses();
+        if (courses) {
+            const index = courses.findIndex(c => c.name === course.name);
+            if (index !== -1) {
+                courses[index].units = units;
+                this.saveCourses(courses);
+            }
+        }
     }
 };
