@@ -12,6 +12,7 @@ import HomePage from './pages/HomePage.tsx';
 import AppStorage from './classes/AppStorage.tsx';
 import type { User } from './classes/User.tsx';
 import HitRateLimitPage from './pages/HitRateLimitPage.tsx';
+import CoursePage from './pages/CoursePage.tsx';
 
 function RootScreen() {
   const authenticated = AppAuth.isAuthenticated();
@@ -54,6 +55,10 @@ let router = createBrowserRouter([
           {
             path: "/home",
             element: <HomePage />,
+          },
+          {
+            path: "/course/:courseIndex",
+            element: <CoursePage />
           },
           {
             path: "/hit-rate-limit",

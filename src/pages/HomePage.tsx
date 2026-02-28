@@ -4,6 +4,9 @@ import type Course from "../classes/Course";
 import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";
+import { Button } from "primereact/button";
+import { NavLink } from "react-router-dom";
+import { calculateCourseCode } from "../utils";
 
 function HomePage() {
     const [courses, setCourses] = useState<Course[]>([]);
@@ -20,7 +23,7 @@ function HomePage() {
     return (
         <div className="home-page">
             <h1>Welcome to World Autonomous Global University!</h1>
-            <p>Your personalized AI-powered education experience starts here.</p>
+            <h2>Plan of Study:</h2>
             <Accordion>
             {
                 courses
@@ -31,16 +34,23 @@ function HomePage() {
                         disabled={!course.unlocked}
                         header={
                             <div className="course-header">
-                                <span className="course-header-text">{course.name}</span>
+                                <span className="course-header-text">
+                                    Course {calculateCourseCode(index)}: : 
+                                    <br />
+                                    {course.name}
+                                </span>
                                 <div className="course-header-progress">
                                     <ProgressBar value={course.progress*100}></ProgressBar>
                                 </div>
                             </div>
                         }
                     >
-                        <div className="course-details">
+                        <div className="course-content">
                             <h2>{course.name}</h2>
-                            <pre>{course.description}</pre>
+                            <p>{course.description}</p>
+                            <NavLink to={`/course/${index}`}>
+                                <Button label="View Course Page" />
+                            </NavLink>
                         </div>
                     </AccordionTab>
                 ))
