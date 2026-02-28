@@ -9,6 +9,7 @@ import majors from "../majors.json";
 import AppStorage from '../classes/AppStorage';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../classes/User';
+import type Course from '../classes/Course';
 
 function GetStartedPage() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function GetStartedPage() {
     modelSetup: { loading: false, done: false },
     major: { loading: false, done: false },
   });
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const submitApiKey = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,6 +45,7 @@ function GetStartedPage() {
         ...checkList,
         modelSetup: { loading: false, done: true },
       });
+      setActiveIndex(activeIndex + 1);
     } else {
       alert("Invalid API Key. Please try again.");
       setCheckList({
@@ -60,13 +63,18 @@ function GetStartedPage() {
         ...checkList,
         major: { loading: false, done: true },
       });
+      setActiveIndex(activeIndex + 1);
     }
     else {
       alert("Please select or enter a valid major.");
     }
   };
 
-  const getStarted = () => {
+  const getStarted = async () => {
+    setCheckList({
+      ...checkList,
+      major: { loading: true, done: false },
+    });
     // Save the contstructed user object to local storage
     const user: User = {
       apiKey,
@@ -75,6 +83,14 @@ function GetStartedPage() {
       hitRateLimit: false,
     }
     AppStorage.saveUser(user);
+    const agent = new ChatAgent(apiKey);
+    const courses: Course[] = await agent.createCourses(major);
+    AppStorage.saveCourses(courses);
+
+    setCheckList({
+      ...checkList,
+      major: { loading: false, done: true },
+    });
     
     // Redirect to home page
     navigate("/home");
@@ -83,8 +99,8 @@ function GetStartedPage() {
   return (
     <div>
       <h1>Welcome to WAGU!</h1>
-      <Accordion>
-        <AccordionTab header="Model Selection & API Key" disabled={checkList.modelSetup.done}>
+      <Accordion activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index as any)} >
+        <AccordionTab header="Model Selection & API Key" disabled={+activeIndex > 0}>
           <h2>Before getting started, please provide your preferable Model as well as an API key to power the application</h2>
           <form className="form-group" onSubmit={submitApiKey}>
             <Dropdown
@@ -107,7 +123,7 @@ function GetStartedPage() {
             the AI model provider will have access to your API key.
           </span>
         </AccordionTab>
-        <AccordionTab header="Select your major" disabled={!checkList.modelSetup.done || checkList.major.done}>
+        <AccordionTab header="Select your major" disabled={activeIndex !== 1}>
           <form className="form-group" onSubmit={submitMajorSelection}>
             <div className="dropdown-group">
               {customMajor ? (
@@ -144,10 +160,11 @@ function GetStartedPage() {
             <Button label="Select" type="submit" disabled={!major || major.trim() === ""} />
           </form>
         </AccordionTab>
-        <AccordionTab header="Get started" disabled={!checkList.modelSetup.done || !checkList.major.done}>
+        <AccordionTab header="Get started" disabled={activeIndex !== 2}>
           <h2>You're all set! Click the button below to start your WAGU journey.</h2>
           <Button
             label="Get Started"
+            loading={checkList.major.loading}
             onClick={getStarted}
           />
         </AccordionTab>

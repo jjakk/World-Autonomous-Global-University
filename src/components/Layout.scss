@@ -52,3 +52,22 @@
     padding-left: 25px;
     padding-right: 25px;
 }
+
+.app-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--primary-700);
+    color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+// Give the body enough padding so that items don't get covered by the footer
+body {
+    padding-bottom: 160px;
+}

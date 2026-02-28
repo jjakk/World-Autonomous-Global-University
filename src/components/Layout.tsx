@@ -1,8 +1,9 @@
+import { Accordion, AccordionTab } from "primereact/accordion";
 import "./Layout.scss";
 import { NavLink, Outlet } from "react-router-dom";
 
 
-function Header() {
+function AppHeader() {
 
     return (
         <header className="nav-header">
@@ -12,17 +13,16 @@ function Header() {
                 <h3>Education for All</h3>
             </div>
             <div className="nav-header-links">
-                {/* <NavLink to="/trucks" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
-                    <span className="nav-header-link">Home</span>
-                </NavLink>
-                <NavLink to="/friends" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
-                    <span className="nav-header-link">Friends</span>
-                </NavLink>
-                <NavLink to="/logout" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>
-                    <span className="nav-header-link">Logout</span>
-                </NavLink> */}
             </div>
         </header>
+    );
+}
+
+function AppFooter() {
+    return (
+        <footer className="app-footer">
+            <p>&copy; 2025 World Autonomous Global University. All rights reserved.</p>
+        </footer>
     );
 }
 
@@ -30,12 +30,11 @@ function Layout() {
 
     return (
         <>
-        <nav>
-            <Header />
-        </nav>
-        <main className="outlet-container">
-            <Outlet />
-        </main>
+            <AppHeader />
+            <main className="outlet-container">
+                <Outlet />
+            </main>
+            <AppFooter />
         </>
     );
 }

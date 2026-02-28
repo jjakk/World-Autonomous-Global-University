@@ -1,0 +1,20 @@
+.home-page {
+    .course-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+
+        .course-header-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            flex: 3;
+        }
+        .course-header-progress {
+            flex: 1;
+        }
+    }
+
+    .course-details {
+    }
+}
