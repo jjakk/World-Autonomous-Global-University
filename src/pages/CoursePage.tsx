@@ -9,6 +9,7 @@ import ChatAgent from "../classes/ChatAgent";
 import type { Unit } from "../classes/Course/Unit";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Accordion, AccordionTab } from "primereact/accordion";
+import UnitRender from "../components/UnitRender";
 
 function CoursePage() {
     let { courseIndex } = useParams();
@@ -62,7 +63,10 @@ function CoursePage() {
         <div>
             <h1>Course {calculateCourseCode(parseInt(courseIndex || "0"))}: {course?.name}</h1>
             <h3>{course?.description}</h3>
-            <ProgressBar value={(course?.progress || 0)*100}></ProgressBar>
+            <div>
+
+            <ProgressBar value={(course?.progress || 0) * 100}></ProgressBar>
+            </div>
             <h2>Curriculum</h2>
             {loadingContent ? (
                 <div className="loading-content">
@@ -72,12 +76,7 @@ function CoursePage() {
                 <Accordion>
                     {units.map((unit, index) => (
                         <AccordionTab key={index} header={unit.name} disabled={!unit.unlocked} >
-                            {unit.reading.map((reading, rIndex) => (
-                                <div key={rIndex}>
-                                    <h4>Reading {rIndex + 1} - {reading.title}</h4>
-                                    <p>{reading.content}</p>
-                                </div>
-                            ))}
+                            <UnitRender key={index} unit={unit} />
                         </AccordionTab>
                     ))}
                 </Accordion>

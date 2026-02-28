@@ -1,4 +1,5 @@
 export interface Reading {
     title: string;
-    content: string;
+    description: string;
+    content?: string;
 };
