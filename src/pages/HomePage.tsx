@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./HomePage.scss"
-import type Course from "../classes/Course";
+import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";

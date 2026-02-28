@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import AppStorage from "./AppStorage";
 import { coursesSchema, coursesSchema_JSON } from "../zodTypes";
-import type Course from "./Course";
+import type Course from "./Course/Course";
+import type { Unit } from "./Course/Unit";
 
 export default class ChatAgent {
     private static model = "gemini-2.5-flash";
@@ -51,8 +52,28 @@ export default class ChatAgent {
         }
         const courses: Course[] = coursesSchema.parse(JSON.parse(response.text))
             .map((c: Course, i: number) =>
-                ({ ...c, unlocked: i === 0, progress: 0 })
+                ({ ...c, unlocked: i === 0, progress: 0, units: [] })
         );
         return courses;
     }
+    // async createUnits(course: Course): Promise<Unit[]> {
+    //     const prompt = `Create 15 weekly units for the following course: "${course.name}", with the following description: "${course.description}`;
+    //     const response = await this.ai.models.generateContent({
+    //         model: ChatAgent.model,
+    //         contents: prompt,
+    //         config: {
+    //             responseMimeType: "application/json",
+    //             responseJsonSchema: unitsSchema_JSON,
+    //         }
+    //     });
+
+    //     if(!response.text) {
+    //         throw new Error("No response from AI");
+    //     }
+    //     const units: Unit[] = unitsSchema.parse(JSON.parse(response.text))
+    //         // .map((c: Unit, i: number) =>
+    //         //     ({ ...c, unlocked: i === 0, progress: 0 })
+    //     );
+    //     return units;
+    // }
 };

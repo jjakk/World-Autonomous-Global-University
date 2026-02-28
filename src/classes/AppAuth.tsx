@@ -1,5 +1,5 @@
 import AppStorage from "./AppStorage";
-import type Course from "./Course";
+import type Course from "./Course/Course";
 import type { User } from "./User";
 
 export default class AppAuth {

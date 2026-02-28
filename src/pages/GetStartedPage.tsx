@@ -9,7 +9,7 @@ import majors from "../majors.json";
 import AppStorage from '../classes/AppStorage';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../classes/User';
-import type Course from '../classes/Course';
+import type Course from '../classes/Course/Course';
 
 function GetStartedPage() {
   const navigate = useNavigate();

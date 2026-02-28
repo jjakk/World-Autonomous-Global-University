@@ -1,3 +1,5 @@
+import type { Unit } from "./Unit";
+
 // Represents a course receieved from the AI but not yet stored in the curriculum. This is used to track progress and unlocked status of courses.
 export default interface Course {
     name: string;
@@ -5,4 +7,5 @@ export default interface Course {
     type: "core" | "elective";
     progress: number;
     unlocked: boolean;
+    units?: Unit[];
 };

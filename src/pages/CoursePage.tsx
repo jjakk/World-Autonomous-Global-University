@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import "./CoursePage.scss"
 import { useEffect, useState } from "react";
-import type Course from "../classes/Course";
+import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
 import { calculateCourseCode } from "../utils";
 import { ProgressBar } from "primereact/progressbar";
@@ -34,6 +34,7 @@ function CoursePage() {
             <p>{course?.description}</p>
             <h2>Curriculum</h2>
             <p>Course curriculum will go here. This is a placeholder page for now.</p>
+            <p>units: {course?.units?.length || 0}</p>
         </div>
     );
 }
