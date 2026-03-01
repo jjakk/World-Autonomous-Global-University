@@ -9,8 +9,6 @@ import 'primeicons/primeicons.css';
 import GetStartedPage from './pages/GetStartedPage.tsx';
 import AppAuth from './classes/AppAuth.tsx';
 import PlanOfStudyPage from './pages/PlanOfStudyPage.tsx';
-import AppStorage from './classes/AppStorage.tsx';
-import type { User } from './classes/User.tsx';
 import HitRateLimitPage from './pages/HitRateLimitPage.tsx';
 import CoursePage from './pages/CoursePage.tsx';
 import ReadingPage from './pages/ReadingPage.tsx';

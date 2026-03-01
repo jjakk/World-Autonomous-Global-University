@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./CoursePage.scss"
 import { useEffect, useState } from "react";
 import type Course from "../classes/Course/Course";

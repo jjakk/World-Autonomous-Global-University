@@ -5,7 +5,7 @@ import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";
 import { Button } from "primereact/button";
-import { calculateCourseCode, evalCourseProgress, evalPlanOfStudyProgress } from "../utils";
+import { calculateCourseCode, evalCourseProgress } from "../utils";
 import { useNavigate } from "react-router-dom";
 
 function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], startIndex: number, endIndex: number }) {
@@ -51,7 +51,6 @@ function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], s
 }
 
 function PlanOfStudyPage() {
-    const navigate = useNavigate();
     const [courses, setCourses] = useState<Course[]>([]);
     
     useEffect(() => {
