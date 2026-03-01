@@ -8,7 +8,7 @@ function AppHeader() {
         <header className="nav-header">
             <div className="nav-header-left">
                 <NavLink to="/">
-                    <img src="/logo.png" alt="logo" className="nav-header-logo" />
+                    <img src="./logo.png" alt="logo" className="nav-header-logo" />
                 </NavLink>
                 <div className="nav-header-text">
                     <h1>World Autonomous</h1>
