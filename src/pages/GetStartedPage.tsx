@@ -122,6 +122,9 @@ function GetStartedPage() {
             *Please note that your API key will be stored securely and used only for this application. No 3rd party other than
             the AI model provider will have access to your API key.
           </span>
+          <span className="api-key-blurb">
+            Don't have a key? Get one from <a href="https://aistudio.google.com/app/api-keys" target="_blank">Google Cloud Console</a>
+          </span>
         </AccordionTab>
         <AccordionTab header="Select your major" disabled={activeIndex !== 1}>
           <form className="form-group" onSubmit={submitMajorSelection}>
