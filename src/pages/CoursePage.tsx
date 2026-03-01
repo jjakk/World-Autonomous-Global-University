@@ -16,7 +16,7 @@ function CoursePage() {
     const navigate = useNavigate();
     const [course, setCourse] = useState<Course | null>(null);
     const [units, setUnits] = useState<Unit[]>([]);
-    const [loadingContent, setLoadingContent] = useState(false);
+    const [loadingContent, setLoadingContent] = useState<boolean>(false);
 
     const createNewUnits = async (course: Course): Promise<Unit[]> => {
         let newUnits: Unit[] = [];
