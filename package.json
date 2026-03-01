@@ -2,7 +2,7 @@
   "name": "wagu",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://jjakk.github.io/World-Autonomous-Global-University",
+  "homepage": "https://jak.bz/World-Autonomous-Global-University/",
   "type": "module",
   "scripts": {
     "predeploy": "npm run build",
