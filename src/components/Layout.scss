@@ -6,7 +6,7 @@
     padding-right: 35px;
     padding-top: 15px;
     padding-bottom: 15px;
-    background-color: var(--primary-700);
+    background-color: var(--primary-800);
     
     .nav-header-left {
         display: flex;
@@ -42,28 +42,45 @@
             }
         }
     }
+}
 
+.ta-interaction-box {
+    width: 50vw;
 
-    .nav-header-links {
+    .ta-chat-history {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        .chat-bubble {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            display: inline-block;
+            margin: 0px;
+        }
+
+        .ta-response {
+            background-color: var(--gray-100);
+            align-self: flex-start;
+        }
+    
+        .student-response {
+            background-color: var(--primary-500);
+            color: white;
+            align-self: flex-end;
+        }
+    }
+
+    .ta-input-form {
         display: flex;
         flex-direction: row;
-        align-items: center;
-        gap: 25px;
-
-        .nav-header-admin-label {
-            color: var(--red-500);
-            font-weight: bolder;
-        }
-        .nav-header-admin-label,
-        .nav-header-link {
-            font-size: 26px;
-        }
-        .inactive {
-            text-decoration: none;
-        }
-        .active {
-            text-decoration: underline;
-        }
+        gap: 10px;
     }
 }
 
