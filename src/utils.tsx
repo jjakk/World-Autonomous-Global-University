@@ -5,6 +5,11 @@ export const calculateCourseCode = (index: number): number => {
     return parseInt(`${Math.ceil((index + 2) / 10)}0${(index+1) % 10}`);
 }
 
+export const getCourseLabel = (course: Course, index: number): string => {
+    const courseCode = calculateCourseCode(index);
+    return `Course ${courseCode}: ${course.name}`;
+}
+
 export const evalPlanOfStudyProgress = (courses: Course[] | null): number => {
     if(!courses || courses.length === 0) return 0;
     const courseProgresses = [];

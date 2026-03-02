@@ -3,7 +3,7 @@ import "./CoursePage.scss"
 import { useEffect, useState } from "react";
 import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
-import { calculateCourseCode, evalCourseProgress, evalUnitProgress } from "../utils";
+import { evalCourseProgress, evalUnitProgress, getCourseLabel } from "../utils";
 import { ProgressBar } from "primereact/progressbar";
 import ChatAgent from "../classes/ChatAgent";
 import type { Unit } from "../classes/Course/Unit";
@@ -61,8 +61,8 @@ function CoursePage() {
     
     return (
         <div>
-            <Button label="Back to Plan of Study" onClick={() => navigate("/plan-of-study")} />
-            <h1>Course {calculateCourseCode(parseInt(courseIndex || "0"))}: {course?.name}</h1>
+            <Button label="Plan of Study" onClick={() => navigate("/plan-of-study")} icon="pi pi-chevron-left" />
+            <h1>{course ? getCourseLabel(course, parseInt(courseIndex || "0")) : ""}</h1>
             <h2>{course?.description}</h2>
             <ProgressBar
                 value={evalCourseProgress(course)}
@@ -83,12 +83,9 @@ function CoursePage() {
                                         {unit.name}
                                     </span>
                                     <div className="unit-header-progress">
-                                        <div className="unit-header-progress-bar">
-                                            <ProgressBar
-                                                value={evalUnitProgress(unit)}
-                                            ></ProgressBar>
-                                        </div>
-                                        <span className="unit-header-progress-text">Complete</span>
+                                        <ProgressBar
+                                            value={evalUnitProgress(unit)}
+                                        ></ProgressBar>
                                     </div>
                                 </div>
                             }

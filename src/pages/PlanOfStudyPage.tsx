@@ -4,8 +4,7 @@ import type Course from "../classes/Course/Course";
 import AppStorage from "../classes/AppStorage";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { ProgressBar } from "primereact/progressbar";
-import { Button } from "primereact/button";
-import { calculateCourseCode, evalCourseProgress } from "../utils";
+import { evalCourseProgress, getCourseLabel } from "../utils";
 import { useNavigate } from "react-router-dom";
 
 function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], startIndex: number, endIndex: number }) {
@@ -18,7 +17,7 @@ function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], s
                 <div key={index} >
                     <div className="course-header">
                         <h2 className="course-header-text">
-                            <a onClick={() => navigate(`/course/${index}`)}>Course {calculateCourseCode(index)}: {course.name}</a>
+                            <a onClick={() => navigate(`/course/${index}`)}>{getCourseLabel(course, index)}</a>
                         </h2>
                         <div className="course-header-progress">
                             <div className="course-header-progress-bar">
@@ -68,7 +67,7 @@ function PlanOfStudyPage() {
                 <AccordionTab header="Junior Year">
                     <CoursesRender courses={courses} startIndex={courses.length / 2} endIndex={(3 * courses.length) / 4} />
                 </AccordionTab>
-                <AccordionTab header="AccordionTab Year">
+                <AccordionTab header="Senior Year">
                     <CoursesRender courses={courses} startIndex={(3 * courses.length) / 4} endIndex={courses.length} />
                 </AccordionTab>
             </Accordion>
