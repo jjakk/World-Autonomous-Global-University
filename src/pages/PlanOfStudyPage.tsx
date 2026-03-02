@@ -12,41 +12,30 @@ function CoursesRender({ courses, startIndex, endIndex }: { courses: Course[], s
     const navigate = useNavigate();
 
     return (
-        <Accordion>
+        <div>
         {
             courses.map((course, index) => (index >= startIndex && index < endIndex) ? (
-                <AccordionTab
-                    key={index}
-                    header={
-                        <div className="course-header">
-                            <span className="course-header-text">
-                                Course {calculateCourseCode(index)}:
-                                <br />
-                                {course.name}
-                            </span>
-                            <div className="course-header-progress">
-                                <div className="course-header-progress-bar">
-                                    <ProgressBar
-                                        value={evalCourseProgress(course)}
-                                    ></ProgressBar>
-                                </div>
-                                <span className="course-header-progress-text">Complete</span>
+                <div key={index} >
+                    <div className="course-header">
+                        <h2 className="course-header-text">
+                            <a onClick={() => navigate(`/course/${index}`)}>Course {calculateCourseCode(index)}: {course.name}</a>
+                        </h2>
+                        <div className="course-header-progress">
+                            <div className="course-header-progress-bar">
+                                <ProgressBar
+                                    value={evalCourseProgress(course)}
+                                ></ProgressBar>
                             </div>
+                            <span className="course-header-progress-text">Complete</span>
                         </div>
-                    }
-                >
-                    <div className="course-content">
-                        <h2>{course.name}</h2>
-                        <p>{course.description}</p>
-                        <Button
-                            label="View Course Page"
-                            onClick={() => navigate(`/course/${index}`)}
-                        />
                     </div>
-                </AccordionTab>
+                    <div className="course-content">
+                        <h4>{course.description}</h4>
+                    </div>
+                </div>
             ) : null)
         }
-        </Accordion>
+        </div>
     );
 }
 
@@ -69,14 +58,20 @@ function PlanOfStudyPage() {
                 value={evalPlanOfStudyProgress(courses)}
             ></ProgressBar> */}
             <h2>Your Plan of Study:</h2>
-            <h3>Freshman Year</h3>
-            <CoursesRender courses={courses} startIndex={0} endIndex={courses.length / 4} />
-            <h3>Sophomore Year</h3>
-            <CoursesRender courses={courses} startIndex={courses.length / 4} endIndex={courses.length / 2} />
-            <h3>Junior Year</h3>
-            <CoursesRender courses={courses} startIndex={courses.length / 2} endIndex={(3 * courses.length) / 4} />
-            <h3>Senior Year</h3>
-            <CoursesRender courses={courses} startIndex={(3 * courses.length) / 4} endIndex={courses.length} />
+            <Accordion>
+                <AccordionTab header="Freshman Year">
+                    <CoursesRender courses={courses} startIndex={0} endIndex={courses.length / 4} />
+                </AccordionTab>
+                <AccordionTab header="Sophomore Year">
+                    <CoursesRender courses={courses} startIndex={courses.length / 4} endIndex={courses.length / 2} />
+                </AccordionTab>
+                <AccordionTab header="Junior Year">
+                    <CoursesRender courses={courses} startIndex={courses.length / 2} endIndex={(3 * courses.length) / 4} />
+                </AccordionTab>
+                <AccordionTab header="AccordionTab Year">
+                    <CoursesRender courses={courses} startIndex={(3 * courses.length) / 4} endIndex={courses.length} />
+                </AccordionTab>
+            </Accordion>
         </div>
     );
 };
